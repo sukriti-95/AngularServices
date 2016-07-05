@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Angular Services Assignment 2</title>
+	<!-- Create a constants service and show its usage in a controller -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+      <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+      
+      <script>
+         var myApp = angular.module("myApp", []);
+                 
+         myApp.constant("g","9.8");            // constant directive
+         myApp.value("defaultInput1", 5);
+          myApp.value("defaultInput2", 5);
+         
+         myApp.factory('MathService', function() {
+            var factory = {};
+            factory.multiply = function(a, b) {
+               return a * b;
+            }
+            return factory;
+         });
+         
+         myApp.service('CalcService', function(MathService,g){
+            this.potentialenergy = function(a,b) {
+               return ( MathService.multiply(g,( MathService.multiply(a,b) )) );
+            }
+         });
+         
+         myApp.controller('myctrl', function($scope, CalcService, g,defaultInput1, defaultInput2) {
+            $scope.number1 = defaultInput1;
+            $scope.number2 = defaultInput2;
+            $scope.result = CalcService.potentialenergy($scope.number1, $scope.number2);
+            $scope.potentialenergy = function() {
+               $scope.result = CalcService.potentialenergy($scope.number1, $scope.number2);
+            }
+         });
+         
+      </script>
+</head>
+<body ng-app="myApp">
+ <div class="container" ng-controller = "myctrl">
+          <h2>Calculation of Potential Energy</h2>
+         <p>Enter Mass: <input type = "number" ng-model = "number1" /></p>
+         <p>Enter Height: <input type = "number" ng-model = "number2" /></p>
+         <button ng-click = "potentialenergy()"> Click </button>
+         <p>Result: {{result}}</p>
+      </div>
+              
+
+
+</body>
+</html>
